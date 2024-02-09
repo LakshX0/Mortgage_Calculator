@@ -8,6 +8,9 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
+    final static byte MONTHS_IN_YEAR = 12;
+    final static byte PRECENT = 100;
+
     public static void main(String[] args) {
 //          OtherEx otherEx = new OtherEx();
 //          String messeage = otherEx.greetUser("Lakshan", "Attanayake");
@@ -23,9 +26,19 @@ public class Main {
         byte period = (byte) readNumber("Period(Years): ", 1, 30);
 
         double mortgage = calculateMortgage(principal, rate, period);
-
         String MortgageFormat = NumberFormat.getCurrencyInstance().format(mortgage);
-        System.out.println("Your Mortgage is " + MortgageFormat);
+        System.out.println();
+        System.out.println("MORTGAGE");
+        System.out.println("--------");
+        System.out.println("Monthly Payments " + MortgageFormat);
+
+        System.out.println();
+        System.out.println("PAYMENT SCHEDULE");
+        System.out.println("-----------------");
+        for (short month = 1; month <= period * MONTHS_IN_YEAR; month++) {
+            double balance = calculateBalance(principal, rate, period, month);
+            System.out.println(NumberFormat.getCurrencyInstance().format(balance));
+        }
     }
 
     public static double readNumber(String prompt, double min, double max) {
@@ -47,6 +60,15 @@ public class Main {
             byte period,
             short numberOfPaymentsMade
     ) {
+        final byte MONTHS_IN_YEAR = 12;
+        final byte PRECENT = 100;
+
+        double monthlyInterest = rate / PRECENT / MONTHS_IN_YEAR;
+        float numberOfPayments = period * MONTHS_IN_YEAR;
+
+        double balance = principal
+                * (Math.pow(1 + monthlyInterest, numberOfPayments) - Math.pow(1 + monthlyInterest, numberOfPaymentsMade))
+                / (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
 
         return balance;
     }
@@ -55,9 +77,6 @@ public class Main {
             double principal,
             double rate,
             byte period) {
-
-        final byte MONTHS_IN_YEAR = 12;
-        final byte PRECENT = 100;
 
         double monthlyInterest = rate / PRECENT / MONTHS_IN_YEAR;
         float numberOfPayments = period * MONTHS_IN_YEAR;
