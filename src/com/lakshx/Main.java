@@ -25,13 +25,21 @@ public class Main {
         double rate = readNumber("Preferred Annual rate: ", 1, 30);
         byte period = (byte) readNumber("Period(Years): ", 1, 30);
 
+        printMortgage(principal, rate, period);
+
+        printPaymentSchedule(principal, rate, period);
+    }
+
+    private static void printMortgage(double principal, double rate, byte period) {
         double mortgage = calculateMortgage(principal, rate, period);
         String MortgageFormat = NumberFormat.getCurrencyInstance().format(mortgage);
         System.out.println();
         System.out.println("MORTGAGE");
         System.out.println("--------");
         System.out.println("Monthly Payments " + MortgageFormat);
+    }
 
+    private static void printPaymentSchedule(double principal, double rate, byte period) {
         System.out.println();
         System.out.println("PAYMENT SCHEDULE");
         System.out.println("-----------------");
