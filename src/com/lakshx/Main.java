@@ -1,32 +1,18 @@
 package com.lakshx;
 
-import java.awt.*;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class Main {
     final static byte MONTHS_IN_YEAR = 12;
     final static byte PRECENT = 100;
 
     public static void main(String[] args) {
-//          OtherEx otherEx = new OtherEx();
-//          String messeage = otherEx.greetUser("Lakshan", "Attanayake");
 
-//        Exercises exercises = new Exercises();
-//        exercises.Ex();
-
-//        FizzBuzz fizzBuzz = new FizzBuzz();
-//        fizzBuzz.run();
-
-        double principal = readNumber("Enter your Principal: ", 1000, 1_000_000);
-        double rate = readNumber("Preferred Annual rate: ", 1, 30);
-        byte period = (byte) readNumber("Period(Years): ", 1, 30);
+        double principal = Console.readNumber("Enter your Principal: ", 1000, 1_000_000);
+        double rate = Console.readNumber("Preferred Annual rate: ", 1, 30);
+        byte period = (byte) Console.readNumber("Period(Years): ", 1, 30);
 
         printMortgage(principal, rate, period);
-
         printPaymentSchedule(principal, rate, period);
     }
 
@@ -47,19 +33,6 @@ public class Main {
             double balance = calculateBalance(principal, rate, period, month);
             System.out.println(NumberFormat.getCurrencyInstance().format(balance));
         }
-    }
-
-    public static double readNumber(String prompt, double min, double max) {
-        Scanner scanner = new Scanner(System.in);
-        double value;
-        while (true) {
-            System.out.print(prompt);
-            value = scanner.nextDouble();
-            if (value >= min && value <= max)
-                break;
-            System.out.println("Your rate should be between" + min + " - " + max);
-        }
-        return value;
     }
 
     public static double calculateBalance(
