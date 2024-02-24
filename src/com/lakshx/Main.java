@@ -1,7 +1,5 @@
 package com.lakshx;
 
-import java.text.NumberFormat;
-
 public class Main {
     final static byte MONTHS_IN_YEAR = 12;
     final static byte PRECENT = 100;
@@ -12,63 +10,13 @@ public class Main {
         double rate = Console.readNumber("Preferred Annual rate: ", 1, 30);
         byte period = (byte) Console.readNumber("Period(Years): ", 1, 30);
 
-        printMortgage(principal, rate, period);
-        printPaymentSchedule(principal, rate, period);
+        var calculator = new MortgageCal(principal, rate, period);
+
+        var report = new MortgageReport(calculator);
+        report.printMortgage();
+        report.printPaymentSchedule();
     }
 
-    private static void printMortgage(double principal, double rate, byte period) {
-        double mortgage = calculateMortgage(principal, rate, period);
-        String MortgageFormat = NumberFormat.getCurrencyInstance().format(mortgage);
-        System.out.println();
-        System.out.println("MORTGAGE");
-        System.out.println("--------");
-        System.out.println("Monthly Payments " + MortgageFormat);
-    }
-
-    private static void printPaymentSchedule(double principal, double rate, byte period) {
-        System.out.println();
-        System.out.println("PAYMENT SCHEDULE");
-        System.out.println("-----------------");
-        for (short month = 1; month <= period * MONTHS_IN_YEAR; month++) {
-            double balance = calculateBalance(principal, rate, period, month);
-            System.out.println(NumberFormat.getCurrencyInstance().format(balance));
-        }
-    }
-
-    public static double calculateBalance(
-            double principal,
-            double rate,
-            byte period,
-            short numberOfPaymentsMade
-    ) {
-        final byte MONTHS_IN_YEAR = 12;
-        final byte PRECENT = 100;
-
-        double monthlyInterest = rate / PRECENT / MONTHS_IN_YEAR;
-        float numberOfPayments = period * MONTHS_IN_YEAR;
-
-        double balance = principal
-                * (Math.pow(1 + monthlyInterest, numberOfPayments) - Math.pow(1 + monthlyInterest, numberOfPaymentsMade))
-                / (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
-
-        return balance;
-    }
-
-    public static double calculateMortgage(
-            double principal,
-            double rate,
-            byte period) {
-
-        double monthlyInterest = rate / PRECENT / MONTHS_IN_YEAR;
-        float numberOfPayments = period * MONTHS_IN_YEAR;
-
-        double mortgage = principal
-                * (monthlyInterest * Math.pow((1 + monthlyInterest), numberOfPayments))
-                / (Math.pow((1 + monthlyInterest), numberOfPayments) - 1);
-
-        return mortgage;
-
-    }
 }
 
 
