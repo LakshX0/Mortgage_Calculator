@@ -1,6 +1,8 @@
 package com.lakshx;
 
 public class MortgageCal {
+    private final static byte MONTHS_IN_YEAR = 12;
+    private final static byte PERCENT = 100;
     private double principal;
     private double rate;
     private byte period;
@@ -13,8 +15,8 @@ public class MortgageCal {
 
     public double calculateMortgage() {
 
-        double monthlyInterest = rate / Main.PRECENT / Main.MONTHS_IN_YEAR;
-        float numberOfPayments = period * Main.MONTHS_IN_YEAR;
+        double monthlyInterest = getMonthlyInterest();
+        float numberOfPayments = getNumberOfPayments();
 
         double mortgage = principal
                 * (monthlyInterest * Math.pow((1 + monthlyInterest), numberOfPayments))
@@ -38,7 +40,19 @@ public class MortgageCal {
         return balance;
     }
 
-    public short getPeriod() {
-        return period;
+    public double[] getRemainingBalances() {
+        var balances = new double[getNumberOfPayments()];
+        for (short month = 1; month <= period * balances.length; month++)
+            balances[month - 1] = calculateBalance(month);
+        return balances;
     }
+
+    private int getNumberOfPayments() {
+        return period * MONTHS_IN_YEAR;
+    }
+
+    private double getMonthlyInterest() {
+        return rate / PERCENT / MONTHS_IN_YEAR;
+    }
+
 }
